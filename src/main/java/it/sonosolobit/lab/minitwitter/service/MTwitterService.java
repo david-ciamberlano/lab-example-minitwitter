@@ -1,7 +1,7 @@
 package it.sonosolobit.lab.minitwitter.service;
 
-import it.sonosolobit.lab.minitwitter.DAO.MiniTwitterMongoDao;
-import it.sonosolobit.lab.minitwitter.DO.MiniTweet;
+import it.sonosolobit.lab.minitwitter.DAO.MTwitterMongoDao;
+import it.sonosolobit.lab.minitwitter.DO.MTweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +12,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class MiniTwitterService {
+public class MTwitterService {
 
     @Autowired
-    MiniTwitterMongoDao dao;
+    MTwitterMongoDao dao;
 
-    public void parseInsertTweet (MiniTweet newTweet) {
+    public void parseInsertTweet (MTweet newTweet) {
 
         List<String> mentions =  this.getMentions(newTweet.getText());
         List<String> hashtags =  this.getHashtags( newTweet.getText());
@@ -31,19 +31,19 @@ public class MiniTwitterService {
 
     }
 
-    public List<String> findByHashtag (String hashtag) {
+    public List<MTweet> findByHashtag (String hashtag) {
 
         return dao.findTweetsByHashtag(hashtag);
     }
 
 
-    public List<String> findByUser (String user) {
+    public List<MTweet> findByUser (String user) {
 
         return dao.findTweetsByUser(user);
     }
 
 
-    public List<String> findTimeline (String user) {
+    public List<MTweet> findTimeline (String user) {
 
         return dao.timeline(user);
     }

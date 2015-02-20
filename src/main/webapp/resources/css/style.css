@@ -1,0 +1,57 @@
+body {
+    background-color: #fcfcfc;
+}
+
+
+header {
+    text-align: center;
+}
+
+header h1 {
+    color: yellowgreen;
+    font-size: 6em;
+    font-family: 'Lobster', cursive;
+    margin: 20px;
+}
+
+header h2 {
+    color: yellowgreen;
+    font-size: 3em;
+    font-family: 'Lobster', cursive;
+    margin: 20px;
+}
+
+header h3 {
+    color: red;
+    font-size: 2em;
+    font-family: 'Lobster', cursive;
+}
+
+
+#tweetlist {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 10px auto;
+    width: 600px;
+    background-color: white;
+}
+
+#addnew {
+    margin: 10px auto 20px;
+    width: 600px;
+ }
+
+.tweet {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+}
+
+.tweet_info {
+    color: #bbb;
+    margin-bottom: .6em;
+}
+
+.tweet_text {
+    font-size: 1.5em;
+    margin: 25px 0 15px;
+}

@@ -1,14 +1,15 @@
 package it.sonosolobit.lab.minitwitter.DO;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MiniTweet {
+public class MTweet {
 
-    private String text;
-    private String user;
-    private Long timestamp;
-    private List<String> mentions;
-    private List<String> hashtags;
+    private String text = "";
+    private String user = "";
+    private Long timestamp = -1L;
+    private List<String> mentions = new ArrayList<>();
+    private List<String> hashtags = new ArrayList<>();
 
 
     /*

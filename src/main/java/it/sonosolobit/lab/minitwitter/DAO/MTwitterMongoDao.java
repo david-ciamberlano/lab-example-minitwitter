@@ -1,7 +1,7 @@
 package it.sonosolobit.lab.minitwitter.DAO;
 
 import com.mongodb.*;
-import it.sonosolobit.lab.minitwitter.DO.MiniTweet;
+import it.sonosolobit.lab.minitwitter.DO.MTweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Repository
-public class MiniTwitterMongoDao implements MiniTwitterDao {
+public class MTwitterMongoDao implements MTwitterDao {
 
     @Autowired
     MongoClient mongoClient;
@@ -26,7 +26,7 @@ public class MiniTwitterMongoDao implements MiniTwitterDao {
      * Inserisce un nuovo tweet nel database
      * @param tweet il tweet da inserire
      */
-    public void insertTweet (MiniTweet tweet) {
+    public void insertTweet (MTweet tweet) {
 
         DB db = mongoClient.getDB(dbName);
 
@@ -51,29 +51,13 @@ public class MiniTwitterMongoDao implements MiniTwitterDao {
      * @param hashtag
      * @return lista di tweet con il dato hashtag
      */
-    public List<String> findTweetsByHashtag (String hashtag) {
-
-        DB db = mongoClient.getDB(dbName);
+    public List<MTweet> findTweetsByHashtag (String hashtag) {
 
         // prepara la query
         BasicDBObject query = new BasicDBObject("hashtags", hashtag);
-        BasicDBObject field = new BasicDBObject("text",1);
+        BasicDBObject fields = new BasicDBObject("text",1).append("timestamp", 1);
 
-        Cursor cursor = db.getCollection(this.tweetCollection).find(query,field);
-
-        List<String> tweets = new ArrayList<String>();
-
-        try {
-            while(cursor.hasNext()) {
-
-                BasicDBObject dbo = (BasicDBObject)cursor.next();
-                tweets.add(dbo.getString("text"));
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return tweets;
+        return getMiniTweets(query,fields);
 
     }
 
@@ -82,66 +66,64 @@ public class MiniTwitterMongoDao implements MiniTwitterDao {
      * @param user
      * @return
      */
-    public List<String> findTweetsByUser (String user) {
-
-        DB db = mongoClient.getDB(dbName);
+    public List<MTweet> findTweetsByUser (String user) {
 
         // prepara la query
         BasicDBObject query = new BasicDBObject("user", user);
-        BasicDBObject field = new BasicDBObject("text",1);
+        BasicDBObject fields = new BasicDBObject("text",1).append("timestamp", 1).append("user",1);
 
-        Cursor cursor = db.getCollection(this.tweetCollection).find(query,field);
-
-        List<String> tweets = new ArrayList<String>();
-
-        try {
-            while(cursor.hasNext()) {
-
-                BasicDBObject dbo = (BasicDBObject)cursor.next();
-                tweets.add(dbo.getString("text"));
-            }
-        } finally {
-            cursor.close();
-        }
-
-        return tweets;
+        return getMiniTweets(query,fields);
 
     }
 
 
-    public List<String> timeline (String user) {
-
-        DB db = mongoClient.getDB(dbName);
+    public List<MTweet> timeline (String user) {
 
         // prepara la query
         BasicDBList or = new BasicDBList();
 
         BasicDBObject queryUser = new BasicDBObject("user", user);
         BasicDBObject queryMention = new BasicDBObject("mentions", user);
-        BasicDBObject field = new BasicDBObject("text",1);
+        BasicDBObject fields = new BasicDBObject("text",1).append("timestamp",1).append("user",1);
+
 
         or.add(queryUser);
         or.add(queryMention);
 
         DBObject query = new BasicDBObject ("$or", or);
 
-        DBCursor cursor = db.getCollection(this.tweetCollection).find(query,field);
+        return getMiniTweets(query,fields);
+    }
 
-        cursor.sort(new BasicDBObject("timestamp",-1));
 
-        List<String> tweets = new ArrayList<String>();
+
+    private List<MTweet> getMiniTweets (DBObject query, DBObject fields) {
+
+        DB db = mongoClient.getDB(dbName);
+
+        DBCursor cursor = db.getCollection(this.tweetCollection).find(query,fields);
+
+        cursor.sort(new BasicDBObject("timestamp",-1)).limit(25);
+
+        List<MTweet> tweets = new ArrayList<>();
 
         try {
             while(cursor.hasNext()) {
 
                 BasicDBObject dbo = (BasicDBObject)cursor.next();
-                tweets.add(dbo.getString("text"));
+
+                MTweet mTweet = new MTweet();
+                mTweet.setText(dbo.getString("text"));
+                mTweet.setUser(dbo.getString("user"));
+                mTweet.setTimestamp(dbo.getLong("timestamp"));
+
+                tweets.add(mTweet);
             }
         } finally {
             cursor.close();
         }
 
-        return tweets;
-    }
+        return tweets;    }
 
 }
+

@@ -1,8 +1,7 @@
 package it.sonosolobit.lab.minitwitter.controller;
 
-import it.sonosolobit.lab.minitwitter.DO.MiniTweet;
-import it.sonosolobit.lab.minitwitter.exceptions.TweetNotFoundException;
-import it.sonosolobit.lab.minitwitter.service.MiniTwitterService;
+import it.sonosolobit.lab.minitwitter.DO.MTweet;
+import it.sonosolobit.lab.minitwitter.service.MTwitterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,68 +11,61 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/")
 public class MainController {
 
     @Autowired
-    private MiniTwitterService service;
+    private MTwitterService service;
 
+    // timeline
+    @RequestMapping (value = {"/{user}","/{user}/timeline"}, method = RequestMethod.GET)
+    public String getUserTimeline (Model model, @PathVariable("user") String user, @ModelAttribute("newTweet") MTweet newTweet ) {
 
+        newTweet.setUser(user);
 
+        List<MTweet> tweets = service.findTimeline(user);
+        model.addAttribute("tweets", tweets);
+        model.addAttribute("user", user);
+        model.addAttribute("pagetype", "timeline");
 
-    @RequestMapping (value = "{user}/add", method = RequestMethod.GET)
-    public String addNewTweetForm (Model model, @PathVariable("user") String user) throws TweetNotFoundException {
-
-        MiniTweet tweet = new MiniTweet();
-        tweet.setUser(user);
-
-        model.addAttribute("newTweet", tweet);
-        return "addNew";
+        return "home";
     }
 
-
-    @RequestMapping (value = "{user}/add", method = RequestMethod.POST)
-    public String addNewTweet ( @ModelAttribute("newTweet") MiniTweet newTweet, @PathVariable("user") String user ) {
+    // Aggiunta di un nuovo tweet
+    @RequestMapping (value = "/{user}/add", method = RequestMethod.POST)
+    public String addNewTweet ( @ModelAttribute("newTweet") MTweet newTweet, @PathVariable("user") String user ) {
 
         service.parseInsertTweet(newTweet);
 
-        return "redirect:/"+user+"/timeline";
+        return "redirect:/"+user;
     }
 
-    @RequestMapping (value = "{user}/timeline", method = RequestMethod.GET)
-    public String getUserTimeline (Model model, @PathVariable("user") String user) {
+    // Trova i tweet postati da un utente
+    @RequestMapping (value = "/{user}/tweets", method = RequestMethod.GET)
+    public String getUserTweets (Model model, @PathVariable("user") String user, @ModelAttribute("newTweet") MTweet newTweet ) {
 
-        List<String> tweets = service.findTimeline(user);
+        List<MTweet> tweets = service.findByUser(user);
 
         model.addAttribute("tweets", tweets);
+        model.addAttribute("pagetype", "Tweets");
 
-        return "tweetList";
+        return "home";
     }
 
 
-    @RequestMapping (value = "{user}/tweets", method = RequestMethod.GET)
-    public String getUserTweets (Model model, @PathVariable("user") String user) {
+    // Trova i tweet che contengono un certo hashtag
+    @RequestMapping (value = "/hashtag/{hashtag}", method = RequestMethod.GET)
+    public String getTweetsByHashTag (Model model, @PathVariable("hashtag") String hashtag, @ModelAttribute("newTweet") MTweet newTweet) {
 
-        List<String> tweets = service.findByUser(user);
+        List<MTweet> tweets  = service.findByHashtag(hashtag);
 
         model.addAttribute("tweets", tweets);
+        model.addAttribute("pagetype", "hashtag: "+hashtag);
 
-        return "tweetList";
+        return "home";
     }
 
 
-    @RequestMapping (value = "hashtag/{hashtag}", method = RequestMethod.GET)
-    public String getTweetsByHashTag (Model model, @PathVariable("hashtag") String hashtag) {
-
-        List<String> tweets  = service.findByHashtag(hashtag);
-
-        model.addAttribute("tweets", tweets);
-
-        return "tweetList";
-    }
-
-
-    public void setService(MiniTwitterService service) {
+    public void setService(MTwitterService service) {
         this.service = service;
     }
 }

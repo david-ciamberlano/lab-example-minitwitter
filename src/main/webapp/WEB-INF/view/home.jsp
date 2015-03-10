@@ -18,7 +18,8 @@
         <h3>${newTweet.user}</h3>
     </header>
     <section id="addnew">
-        <form:form modelAttribute="newTweet" action="${user}/add">
+        <c:url value="/${user}/add" var="addUrl"></c:url>
+        <form:form modelAttribute="newTweet" action="${addUrl}" method="post">
             <div>
                 Cosa c'&egrave; di nuovo?
                 <form:hidden path="user"/>

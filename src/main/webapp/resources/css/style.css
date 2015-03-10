@@ -1,5 +1,5 @@
 body {
-    background-color: #fcfcfc;
+    background: #c0deed url("/minitwitter/resources/images/bg.png") no-repeat;
 }
 
 
@@ -8,10 +8,10 @@ header {
 }
 
 header h1 {
-    color: yellowgreen;
+    color: white;
     font-size: 6em;
     font-family: 'Lobster', cursive;
-    margin: 20px;
+    margin: 10px auto 20px auto;
 }
 
 header h2 {
@@ -47,7 +47,7 @@ header h3 {
 }
 
 .tweet_info {
-    color: #bbb;
+    color: #999;
     margin-bottom: .6em;
 }
 

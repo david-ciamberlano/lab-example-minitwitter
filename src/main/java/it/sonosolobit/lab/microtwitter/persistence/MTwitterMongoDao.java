@@ -1,7 +1,7 @@
-package it.sonosolobit.lab.minitwitter.DAO;
+package it.sonosolobit.lab.microtwitter.persistence;
 
 import com.mongodb.*;
-import it.sonosolobit.lab.minitwitter.DO.MTweet;
+import it.sonosolobit.lab.microtwitter.domain.MTweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -57,7 +57,7 @@ public class MTwitterMongoDao implements MTwitterDao {
         BasicDBObject query = new BasicDBObject("hashtags", hashtag);
         BasicDBObject fields = new BasicDBObject("text",1).append("timestamp", 1);
 
-        return getMiniTweets(query,fields);
+        return getMicroTweets(query, fields);
 
     }
 
@@ -72,7 +72,7 @@ public class MTwitterMongoDao implements MTwitterDao {
         BasicDBObject query = new BasicDBObject("user", user);
         BasicDBObject fields = new BasicDBObject("text",1).append("timestamp", 1).append("user",1);
 
-        return getMiniTweets(query,fields);
+        return getMicroTweets(query, fields);
 
     }
 
@@ -92,12 +92,12 @@ public class MTwitterMongoDao implements MTwitterDao {
 
         DBObject query = new BasicDBObject ("$or", or);
 
-        return getMiniTweets(query,fields);
+        return getMicroTweets(query, fields);
     }
 
 
 
-    private List<MTweet> getMiniTweets (DBObject query, DBObject fields) {
+    private List<MTweet> getMicroTweets(DBObject query, DBObject fields) {
 
         DB db = mongoClient.getDB(dbName);
 

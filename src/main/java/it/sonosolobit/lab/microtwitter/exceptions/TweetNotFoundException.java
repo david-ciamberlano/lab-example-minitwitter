@@ -1,4 +1,4 @@
-package it.sonosolobit.lab.minitwitter.exceptions;
+package it.sonosolobit.lab.microtwitter.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

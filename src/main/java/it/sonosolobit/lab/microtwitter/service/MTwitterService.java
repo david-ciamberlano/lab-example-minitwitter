@@ -1,7 +1,7 @@
-package it.sonosolobit.lab.minitwitter.service;
+package it.sonosolobit.lab.microtwitter.service;
 
-import it.sonosolobit.lab.minitwitter.DAO.MTwitterMongoDao;
-import it.sonosolobit.lab.minitwitter.DO.MTweet;
+import it.sonosolobit.lab.microtwitter.persistence.MTwitterMongoDao;
+import it.sonosolobit.lab.microtwitter.domain.MTweet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

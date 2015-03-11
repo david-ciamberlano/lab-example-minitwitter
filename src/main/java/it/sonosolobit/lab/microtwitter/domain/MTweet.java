@@ -1,4 +1,4 @@
-package it.sonosolobit.lab.minitwitter.DO;
+package it.sonosolobit.lab.microtwitter.domain;
 
 import java.util.ArrayList;
 import java.util.List;

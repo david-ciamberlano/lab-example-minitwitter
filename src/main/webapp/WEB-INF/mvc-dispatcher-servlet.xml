@@ -8,7 +8,7 @@
 
     <mvc:annotation-driven />
 
-    <context:component-scan base-package="it.sonosolobit.lab.minitwitter"/>
+    <context:component-scan base-package="it.sonosolobit.lab.microtwitter"/>
     <mvc:resources mapping="/resources/**" location="/resources/" />
     <context:property-placeholder location="WEB-INF/config.properties" />
 

@@ -1,7 +1,7 @@
-package it.sonosolobit.lab.minitwitter.controller;
+package it.sonosolobit.lab.microtwitter.controller;
 
-import it.sonosolobit.lab.minitwitter.DO.MTweet;
-import it.sonosolobit.lab.minitwitter.service.MTwitterService;
+import it.sonosolobit.lab.microtwitter.domain.MTweet;
+import it.sonosolobit.lab.microtwitter.service.MTwitterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,8 +64,4 @@ public class MainController {
         return "home";
     }
 
-
-    public void setService(MTwitterService service) {
-        this.service = service;
-    }
 }

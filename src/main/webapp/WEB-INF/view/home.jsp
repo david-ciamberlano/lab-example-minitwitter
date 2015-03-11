@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>Mini Twitter</title>
+    <title>Micro Twitter</title>
     <link rel="stylesheet" href="<c:url value="/resources/css/style.css"></c:url>" />
     <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 </head>

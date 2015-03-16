@@ -20,8 +20,6 @@ public class MainController {
     @RequestMapping (value = {"/{user}","/{user}/timeline"}, method = RequestMethod.GET)
     public String getUserTimeline (Model model, @PathVariable("user") String user, @ModelAttribute("newTweet") MTweet newTweet ) {
 
-        newTweet.setUser(user);
-
         List<MTweet> tweets = service.findTimeline(user);
         model.addAttribute("tweets", tweets);
         model.addAttribute("user", user);
@@ -54,7 +52,7 @@ public class MainController {
 
     // Trova i tweet che contengono un certo hashtag
     @RequestMapping (value = "/hashtag/{hashtag}", method = RequestMethod.GET)
-    public String getTweetsByHashTag (Model model, @PathVariable("hashtag") String hashtag, @ModelAttribute("newTweet") MTweet newTweet) {
+    public String getTweetsByHashTag (Model model, @PathVariable("hashtag") String hashtag, @ModelAttribute("newTweet") MTweet newTweet ) {
 
         List<MTweet> tweets  = service.findByHashtag(hashtag);
 

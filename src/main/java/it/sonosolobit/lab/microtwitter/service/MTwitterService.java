@@ -19,8 +19,8 @@ public class MTwitterService {
 
     public void parseInsertTweet (MTweet newTweet) {
 
-        List<String> mentions =  this.getMentions(newTweet.getText());
-        List<String> hashtags =  this.getHashtags( newTweet.getText());
+        List<String> mentions =  this.getSpecialText(newTweet.getText(), 'm');
+        List<String> hashtags =  this.getSpecialText(newTweet.getText(), 'h');
 
         // completa l'oggetto con mentions e hashtags
         newTweet.setMentions(mentions);
@@ -49,34 +49,34 @@ public class MTwitterService {
     }
 
 
-    //esegue il parsing del testo per individuare le mentions
-    private List<String> getMentions (String text) {
 
-        String mentionRegex = "@(\\w+)";
-        Pattern pMentions = Pattern.compile(mentionRegex);
-        Matcher mMentions  = pMentions.matcher(text);
 
-        List<String> mentions = new ArrayList<String>();
-        while (mMentions.find()) {
-            mentions.add (mMentions.group(1));
+    //esegue il parsing del testo per individuare le mentions o gli hashtags
+    private List<String> getSpecialText (String text, char type) {
+
+        List<String> specialText = new ArrayList<>();
+        String regex;
+
+        switch (type) {
+            case 'm':
+                regex = "@(\\w+)";
+                break;
+            case 'h':
+                regex = "#(\\w+)";
+                break;
+            default:
+                return specialText;
         }
 
-        return mentions;
-    }
+        Pattern p = Pattern.compile(regex);
+        Matcher m  = p.matcher(text);
 
-    //esegue il parsing del testo per individuare gli hashtags
-    private List<String> getHashtags (String text) {
-
-        String hashtagsRegex = "#(\\w+)";
-        Pattern pHashtag = Pattern.compile(hashtagsRegex);
-        Matcher mHashtag = pHashtag.matcher(text);
-
-        List<String> hashtags = new ArrayList<String>();
-        while (mHashtag.find()) {
-            hashtags.add (mHashtag.group(1));
+        while (m.find()) {
+            specialText.add (m.group(1));
         }
 
-        return hashtags;
+        return specialText;
     }
+
 
 }

@@ -28,8 +28,6 @@ public class MTwitterMongoDao implements MTwitterDao {
      */
     public void insertTweet (MTweet tweet) {
 
-        DB db = mongoClient.getDB(dbName);
-
         BasicDBObject newTweet = new BasicDBObject();
         newTweet.put("user", tweet.getUser());
         newTweet.put("text", tweet.getText());
@@ -40,7 +38,9 @@ public class MTwitterMongoDao implements MTwitterDao {
 
         newTweet.put("hashtags", tweet.getHashtags());
 
-        //TODO implementare controllo
+        //TODO implementare controllo sul client
+
+        DB db = mongoClient.getDB(dbName);
         db.getCollection("tweets").insert(newTweet);
 
     }

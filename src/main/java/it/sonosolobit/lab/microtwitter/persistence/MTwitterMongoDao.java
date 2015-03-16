@@ -54,7 +54,7 @@ public class MTwitterMongoDao implements MTwitterDao {
     public List<MTweet> findTweetsByHashtag (String hashtag) {
 
         // prepara la query
-        BasicDBObject query = new BasicDBObject("hashtags", hashtag).append("$limit",25);
+        BasicDBObject query = new BasicDBObject("hashtags", hashtag);
         BasicDBObject fields = new BasicDBObject("text",1).append("timestamp", 1);
 
         return getMicroTweets(query, fields);
@@ -80,13 +80,11 @@ public class MTwitterMongoDao implements MTwitterDao {
     public List<MTweet> timeline (String user) {
 
         // prepara la query
-        BasicDBList or = new BasicDBList();
-
         BasicDBObject queryUser = new BasicDBObject("user", user);
         BasicDBObject queryMention = new BasicDBObject("mentions", user);
         BasicDBObject fields = new BasicDBObject("text",1).append("timestamp",1).append("user",1);
 
-
+        BasicDBList or = new BasicDBList();
         or.add(queryUser);
         or.add(queryMention);
 
@@ -95,15 +93,13 @@ public class MTwitterMongoDao implements MTwitterDao {
         return getMicroTweets(query, fields);
     }
 
-
-
     private List<MTweet> getMicroTweets(DBObject query, DBObject fields) {
 
         DB db = mongoClient.getDB(dbName);
 
         DBCursor cursor = db.getCollection(this.tweetCollection).find(query,fields);
 
-        cursor.sort(new BasicDBObject("timestamp",-1)).limit(25);
+        cursor.sort(new BasicDBObject("timestamp", -1)).limit(50);
 
         List<MTweet> tweets = new ArrayList<>();
 
@@ -119,11 +115,16 @@ public class MTwitterMongoDao implements MTwitterDao {
 
                 tweets.add(mTweet);
             }
-        } finally {
+        }
+        catch (MongoException me) {
+
+        }
+        finally {
             cursor.close();
         }
 
-        return tweets;    }
+        return tweets;
+    }
 
 }
 

@@ -28,9 +28,6 @@
             </div>
         </form:form>
     </section>
-    <section id="links">
-
-    </section>
 
     <main id="tweetlist">
         <c:forEach  items="${tweets}" var="tweet">

@@ -57,7 +57,7 @@ public class MainController {
         List<MTweet> tweets  = service.findByHashtag(hashtag);
 
         model.addAttribute("tweets", tweets);
-        model.addAttribute("pagetype", "hashtag: "+hashtag);
+        model.addAttribute("pagetype", "hashtag: #"+hashtag);
 
         return "home";
     }

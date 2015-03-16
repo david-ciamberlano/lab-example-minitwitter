@@ -55,7 +55,7 @@ public class MTwitterMongoDao implements MTwitterDao {
 
         // prepara la query
         BasicDBObject query = new BasicDBObject("hashtags", hashtag);
-        BasicDBObject fields = new BasicDBObject("text",1).append("timestamp", 1);
+        BasicDBObject fields = new BasicDBObject("text",1).append("timestamp", 1).append("user",1);
 
         return getMicroTweets(query, fields);
 
